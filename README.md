@@ -136,7 +136,7 @@ Currently under development.
 
 Guide:
 
-- Faculty Name
+- Mr. Dhruv Shah
 
 ---
 
