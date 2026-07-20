@@ -131,8 +131,8 @@ Currently under development.
 
 ## Team Members
 
-- Your Name
-- Partner Name
+- Aryan Bhatt
+- Archi
 
 Guide:
 
