@@ -153,4 +153,4 @@ Guide:
 
 ## License
 
-This project is developed by Aryan Bhatt and Ar chi
+This project is developed by Aryan Bhatt and Archi
