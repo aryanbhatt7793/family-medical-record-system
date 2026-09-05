@@ -3,6 +3,8 @@
 A cloud-based Family Medical Record and Emergency Access Management System developed as a mini project using Microsoft Azure services.
 
 ---
+Project Phase 1 Link:
+https://drive.google.com/file/d/1Z38Wsj5Ni41pFxioqcjFQymw8tKTR9XE/view?usp=sharing
 
 ## Project Overview
 
