@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+{% block title %}Emergency Medical Information{% endblock %}
+
+{% block content %}
+<div class="emergency-container">
+
+    <div class="emergency-banner">
+        <span>EMERGENCY MEDICAL PROFILE</span>
+        <h1>{{ user.full_name }}</h1>
+        <p>Important medical information for emergency assistance</p>
+    </div>
+
+    <section class="emergency-card">
+        <h2>Basic Emergency Information</h2>
+
+        <div class="emergency-info-grid">
+            <div class="emergency-info">
+                <span>Blood Group</span>
+                <strong>{{ profile.blood_group or 'Not provided' }}</strong>
+            </div>
+
+            <div class="emergency-info">
+                <span>Known Allergies</span>
+                <strong>{{ profile.allergies or 'Not provided' }}</strong>
+            </div>
+        </div>
+
+        <div class="emergency-info">
+            <span>Emergency Instructions</span>
+            <strong>{{ profile.emergency_instructions or 'No instructions provided' }}</strong>
+        </div>
+    </section>
+
+    <section class="emergency-card">
+        <h2>Emergency Contacts</h2>
+        <p class="emergency-subtitle">Contact the person's family or emergency contacts.</p>
+
+        {% if profile.emergency_contact1_phone %}
+        <div class="contact-card">
+            <div>
+                <strong>{{ profile.emergency_contact1_name or 'Emergency Contact 1' }}</strong>
+                <p>{{ profile.emergency_contact1_phone }}</p>
+            </div>
+            <a class="call-btn" href="tel:{{ profile.emergency_contact1_phone }}">Call</a>
+        </div>
+        {% endif %}
+
+        {% if profile.emergency_contact2_phone %}
+        <div class="contact-card">
+            <div>
+                <strong>{{ profile.emergency_contact2_name or 'Emergency Contact 2' }}</strong>
+                <p>{{ profile.emergency_contact2_phone }}</p>
+            </div>
+            <a class="call-btn" href="tel:{{ profile.emergency_contact2_phone }}">Call</a>
+        </div>
+        {% endif %}
+
+        {% if not profile.emergency_contact1_phone and not profile.emergency_contact2_phone %}
+        <p>No emergency contacts have been provided.</p>
+        {% endif %}
+    </section>
+
+    <section class="request-access-card">
+        <h2>Need Complete Medical Information?</h2>
+        <p>Request permission from the account owner to view additional medical information.</p>
+
+        <a href="{{ url_for('request_access', token=user.qr_token) }}" class="request-btn">
+            Request Complete Medical Access
+        </a>
+    </section>
+
+    <p class="emergency-footer">
+        MediQR - Emergency Medical Information System
+    </p>
+
+</div>
+{% endblock %}

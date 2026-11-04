@@ -1,0 +1,69 @@
+
+{% extends "base.html" %}
+{% block title %}Waiting for Approval - MediQR{% endblock %}
+
+{% block content %}
+<div class="auth-card waiting-card">
+
+    <div class="logo-circle">...</div>
+
+    <h1>Request Submitted</h1>
+
+    <p class="subtitle">
+        Your request has been sent to the account owner.
+    </p>
+
+    <div class="waiting-status" id="request-status">
+        Waiting for the owner to respond...
+    </div>
+
+    <p class="bottom-text">
+        Please keep this page open.
+        It will update automatically.
+    </p>
+
+</div>
+
+<script>
+const requestId = {{ request_id | tojson }};
+
+async function checkStatus() {
+    try {
+        const response = await fetch("/request-status/" + requestId);
+        const data = await response.json();
+
+        const status = document.getElementById("request-status");
+
+        if (data.status === "approved") {
+            status.textContent =
+                "Access approved! Opening medical information...";
+
+            window.location.href = "/medical-access/" + requestId;
+
+        } else if (data.status === "denied") {
+            status.textContent =
+                "Your access request was denied.";
+
+        } else if (data.status === "expired") {
+            status.textContent =
+                "Your access request has expired.";
+
+        } else if (data.status === "pending") {
+            status.textContent =
+                "Waiting for the owner to respond...";
+
+        } else {
+            status.textContent =
+                "Request not found or unavailable.";
+        }
+
+    } catch (error) {
+        console.error("Unable to check request status:", error);
+    }
+}
+
+checkStatus();
+setInterval(checkStatus, 3000);
+</script>
+
+{% endblock %}

@@ -1,0 +1,330 @@
+
+{% extends "base.html" %}
+{% block title %}Medical Profile - MediQR{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+
+    <div class="profile-heading">
+        <div>
+            <h1>My Medical Profile</h1>
+            <p>Manage your emergency and medical information.</p>
+        </div>
+        <span class="profile-status">Profile Setup</span>
+    </div>
+
+    <form method="POST" action="{{ url_for('save_profile') }}">
+
+        <section class="profile-section">
+            <div class="section-heading">
+                <div>
+                    <span class="section-number">01</span>
+                    <h2>Basic Emergency Information</h2>
+                    <p>Information visible immediately after QR scanning.</p>
+                </div>
+                <span class="visibility public">PUBLIC</span>
+            </div>
+
+            <div class="form-grid">
+                <div class="field full">
+                    <label>Full Name</label>
+                    <input type="text" value="{{ current_user.full_name }}" disabled>
+                </div>
+
+                <div class="field">
+                    <label>Blood Group</label>
+                    <select name="blood_group">
+                        <option value="">Select blood group</option>
+                        {% for group in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'Unknown'] %}
+                        <option value="{{ group }}" {% if profile and profile.blood_group == group %}selected{% endif %}>{{ group }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Known Allergies</label>
+                    <input type="text" name="allergies" value="{{ profile.allergies if profile else '' }}">
+                </div>
+
+                <div class="field">
+                    <label>Emergency Contact 1 Name</label>
+                    <input type="text" name="contact1_name" value="{{ profile.emergency_contact1_name if profile else '' }}">
+                </div>
+
+                <div class="field">
+                    <label>Emergency Contact 1 Phone</label>
+                    <input type="tel" name="contact1_phone" value="{{ profile.emergency_contact1_phone if profile else '' }}">
+                </div>
+
+                <div class="field">
+                    <label>Emergency Contact 2 Name</label>
+                    <input type="text" name="contact2_name" value="{{ profile.emergency_contact2_name if profile else '' }}">
+                </div>
+
+                <div class="field">
+                    <label>Emergency Contact 2 Phone</label>
+                    <input type="tel" name="contact2_phone" value="{{ profile.emergency_contact2_phone if profile else '' }}">
+                </div>
+
+                <div class="field full">
+                    <label>Critical Emergency Instructions</label>
+                    <textarea name="emergency_instructions">{{ profile.emergency_instructions if profile else '' }}</textarea>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-section private-section">
+            <div class="section-heading">
+                <div>
+                    <span class="section-number">02</span>
+                    <h2>Additional Medical Information</h2>
+                    <p>Visible only after you approve an access request.</p>
+                </div>
+                <span class="visibility private">PRIVATE</span>
+            </div>
+
+            <div class="form-grid">
+                <div class="field">
+                    <label>Height (cm)</label>
+                    <input type="number" step="0.1" min="1" name="height" id="height" value="{{ profile.height if profile and profile.height else '' }}">
+                </div>
+
+                <div class="field">
+                    <label>Weight (kg)</label>
+                    <input type="number" step="0.1" min="0.1" name="weight" id="weight" value="{{ profile.weight if profile and profile.weight else '' }}">
+                </div>
+
+                <div class="field full bmi-box">
+                    <label>Calculated BMI</label>
+                    <div id="bmi-result">Enter height and weight to calculate BMI.</div>
+                </div>
+
+                <div class="field full">
+                    <label>Existing Medical Conditions</label>
+                    <textarea name="medical_conditions">{{ profile.medical_conditions if profile else '' }}</textarea>
+                </div>
+
+                <div class="field full">
+                    <label>Current Medications</label>
+                    <textarea name="medications">{{ profile.medications if profile else '' }}</textarea>
+                </div>
+
+                <div class="field full">
+                    <label>Previous Surgeries</label>
+                    <textarea name="previous_surgeries">{{ profile.previous_surgeries if profile else '' }}</textarea>
+                </div>
+
+                <div class="field full">
+                    <label>Other Medical History</label>
+                    <textarea name="medical_history">{{ profile.medical_history if profile else '' }}</textarea>
+                </div>
+            </div>
+        </section>
+
+        <button type="submit" class="primary-btn save-profile-btn">
+            Save Medical Profile
+        </button>
+    </form>
+
+    {% if qr_filename %}
+    <section class="qr-section">
+        <h2>Your Emergency QR Code</h2>
+        <p>Anyone scanning this QR code can view your basic emergency information.</p>
+
+        <img src="{{ url_for('qr_image', filename=qr_filename) }}"
+             alt="Emergency QR Code" class="qr-image">
+
+        <p class="qr-note">Keep this QR code accessible during emergencies.</p>
+
+        <a href="{{ url_for('qr_image', filename=qr_filename) }}"
+           download="My_Emergency_QR.png" class="primary-btn qr-download">
+           Download QR Code
+        </a>
+
+        <a href="{{ url_for('emergency', token=current_user.qr_token) }}"
+           target="_blank" class="preview-link">
+           Preview Emergency Page
+        </a>
+    </section>
+    {% endif %}
+
+    <section class="profile-section access-dashboard">
+        <div class="section-heading">
+            <div>
+                <h2>Medical Access Requests</h2>
+                <p>Requests from people scanning your QR code.</p>
+            </div>
+            <span class="request-count" id="request-count">0</span>
+        </div>
+
+        <button type="button" id="enable-sound" class="sound-btn">
+            Enable Notification Sound
+        </button>
+
+        <p id="sound-status" class="sound-status">
+            Click above to enable audio alerts.
+        </p>
+
+        <div id="request-list">
+            <p>No pending access requests.</p>
+        </div>
+    </section>
+
+</div>
+
+<script>
+const heightInput = document.getElementById("height");
+const weightInput = document.getElementById("weight");
+const bmiResult = document.getElementById("bmi-result");
+
+function calculateBMI() {
+    const height = parseFloat(heightInput.value);
+    const weight = parseFloat(weightInput.value);
+
+    if (height > 0 && weight > 0) {
+        const bmi = weight / ((height / 100) ** 2);
+        bmiResult.textContent = "BMI: " + bmi.toFixed(1);
+    } else {
+        bmiResult.textContent = "Enter height and weight to calculate BMI.";
+    }
+}
+
+heightInput.addEventListener("input", calculateBMI);
+weightInput.addEventListener("input", calculateBMI);
+calculateBMI();
+
+let knownRequestIds = null;
+let soundEnabled = false;
+let audioContext = null;
+
+document.getElementById("enable-sound").addEventListener("click", async function() {
+    try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        if (audioContext.state === "suspended") {
+            await audioContext.resume();
+        }
+
+        soundEnabled = true;
+        document.getElementById("sound-status").textContent =
+            "Notification sound enabled.";
+
+        playNotificationSound();
+    } catch (error) {
+        document.getElementById("sound-status").textContent =
+            "Audio could not be enabled in this browser.";
+    }
+});
+
+function playNotificationSound() {
+    if (!soundEnabled || !audioContext) return;
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.frequency.value = 880;
+    gain.gain.value = 0.15;
+
+    oscillator.start();
+
+    gain.gain.setTargetAtTime(0, audioContext.currentTime, 0.2);
+    oscillator.stop(audioContext.currentTime + 0.6);
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, function(character) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        }[character];
+    });
+}
+
+async function decideRequest(id, action) {
+    try {
+        const response = await fetch(
+            "/api/access-requests/" + id + "/decision",
+            {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({action: action})
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.message || "Unable to process request.");
+            return;
+        }
+
+        loadRequests();
+
+    } catch (error) {
+        alert("Unable to connect to the server.");
+    }
+}
+
+async function loadRequests() {
+    try {
+        const response = await fetch("/api/access-requests");
+        if (!response.ok) return;
+
+        const requests = await response.json();
+
+        const currentIds = new Set(requests.map(item => item.id));
+
+        if (knownRequestIds !== null) {
+            const newRequests = requests.filter(
+                item => !knownRequestIds.has(item.id)
+            );
+
+            if (newRequests.length > 0) {
+                playNotificationSound();
+            }
+        }
+
+        knownRequestIds = currentIds;
+
+        document.getElementById("request-count").textContent =
+            requests.length;
+
+        const list = document.getElementById("request-list");
+
+        if (requests.length === 0) {
+            list.innerHTML = "<p>No pending access requests.</p>";
+            return;
+        }
+
+        list.innerHTML = requests.map(item => `
+            <div class="access-request-card">
+                <h3>Medical Information Request #${item.id}</h3>
+                <p><strong>Reason:</strong> ${escapeHTML(item.reason)}</p>
+                <p><strong>Phone:</strong> ${escapeHTML(item.phone)}</p>
+                <p><strong>Time:</strong> ${escapeHTML(item.created)}</p>
+
+                <div class="decision-buttons">
+                    <button onclick="decideRequest(${item.id}, 'allow')"
+                        class="allow-btn">Allow Access</button>
+
+                    <button onclick="decideRequest(${item.id}, 'deny')"
+                        class="deny-btn">Deny Access</button>
+                </div>
+            </div>
+        `).join("");
+
+    } catch (error) {
+        console.error("Request loading failed:", error);
+    }
+}
+
+loadRequests();
+setInterval(loadRequests, 5000);
+</script>
+{% endblock %}

@@ -1,0 +1,674 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background: #ffffff;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.brand {
+    font-size: 25px;
+    font-weight: bold;
+    color: #087e8b;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #334155;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.container {
+    flex: 1;
+    width: 100%;
+    padding: 45px 20px;
+}
+
+.auth-card {
+    background: white;
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+.logo-circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #e0f4f5;
+    color: #087e8b;
+    font-size: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.auth-card h1 {
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 28px;
+    font-size: 14px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 16px 0 7px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #dbe2ea;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #087e8b;
+    box-shadow: 0 0 0 3px rgba(8,126,139,0.1);
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 24px;
+    background: #087e8b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background: #066773;
+}
+
+.bottom-text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 22px;
+    color: #64748b;
+}
+
+.bottom-text a {
+    color: #087e8b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.alert {
+    max-width: 430px;
+    margin: 0 auto 15px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #e0f2fe;
+    color: #075985;
+}
+
+.alert.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.alert.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 25px 20px;
+    }
+
+    .navbar {
+        padding: 15px 5%;
+    }
+
+    .nav-links {
+        gap: 12px;
+        font-size: 13px;
+    }
+}
+
+
+/* MEDICAL PROFILE DASHBOARD */
+
+.profile-container {
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+.profile-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 15px;
+}
+
+.profile-heading h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.profile-heading p {
+    color: #64748b;
+}
+
+.profile-status {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 9px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.profile-section {
+    background: white;
+    padding: 28px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+    gap: 10px;
+}
+
+.section-number {
+    color: #087e8b;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.section-heading h2 {
+    font-size: 21px;
+    margin: 7px 0;
+}
+
+.section-heading p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.visibility {
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.visibility.public {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.visibility.private {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.field {
+    min-width: 0;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    margin-top: 0;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dbe2ea;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background: white;
+}
+
+.field textarea {
+    min-height: 85px;
+    resize: vertical;
+}
+
+.field input:disabled {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.bmi-box {
+    background: #f0fdfa;
+    padding: 15px;
+    border-radius: 9px;
+}
+
+#bmi-result {
+    color: #087e8b;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.save-profile-btn {
+    max-width: 300px;
+    display: block;
+    margin: 10px auto 30px;
+}
+
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field.full {
+        grid-column: auto;
+    }
+
+    .profile-section {
+        padding: 20px 16px;
+    }
+
+    .profile-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .section-heading h2 {
+        font-size: 18px;
+    }
+}
+
+/* EMERGENCY SCANNING PAGE */
+
+.emergency-container {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.emergency-banner {
+    background: #087e8b;
+    color: white;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 22px;
+}
+
+.emergency-banner span {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.emergency-banner h1 {
+    margin: 12px 0;
+    font-size: 30px;
+}
+
+.emergency-banner p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.emergency-card {
+    background: white;
+    padding: 25px;
+    border-radius: 13px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+}
+
+.emergency-card h2,
+.request-access-card h2 {
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.emergency-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.emergency-info {
+    padding: 15px;
+    background: #f1f5f9;
+    border-radius: 9px;
+    margin-bottom: 12px;
+    overflow-wrap: anywhere;
+}
+
+.emergency-info span {
+    display: block;
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.emergency-info strong {
+    font-size: 16px;
+}
+
+.emergency-subtitle {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.contact-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.contact-card p {
+    color: #64748b;
+    margin-top: 6px;
+}
+
+.call-btn {
+    background: #16a34a;
+    color: white;
+    padding: 11px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.request-access-card {
+    background: #fff;
+    border: 1px solid #dbeafe;
+    padding: 25px;
+    border-radius: 13px;
+    text-align: center;
+}
+
+.request-access-card p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.request-btn {
+    display: inline-block;
+    background: #087e8b;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.emergency-footer {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    margin-top: 25px;
+}
+
+@media (max-width: 550px) {
+    .emergency-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .emergency-banner {
+        padding: 22px;
+    }
+
+    .emergency-banner h1 {
+        font-size: 24px;
+    }
+
+    .emergency-card {
+        padding: 18px;
+    }
+
+    .request-btn {
+        width: 100%;
+    }
+}
+
+/* QR CODE SECTION */
+
+.qr-section {
+    background: white;
+    padding: 30px;
+    margin: 25px 0;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+}
+
+.qr-section h2 {
+    font-size: 23px;
+    margin-bottom: 10px;
+}
+
+.qr-section p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.qr-image {
+    display: block;
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    margin: 20px auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.qr-note {
+    margin-bottom: 15px;
+}
+
+.qr-download {
+    display: block;
+    max-width: 250px;
+    margin: 15px auto;
+    text-decoration: none;
+}
+
+.preview-link {
+    display: inline-block;
+    color: #087e8b;
+    font-weight: bold;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+/* ACCESS REQUEST DASHBOARD */
+
+.access-dashboard {
+    margin-top: 25px;
+}
+
+.request-count {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 9px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.sound-btn {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.sound-status {
+    color: #64748b;
+    font-size: 13px;
+    margin: 12px 0;
+}
+
+.access-request-card {
+    background: #f8fafc;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    padding: 18px;
+    margin-top: 15px;
+    overflow-wrap: anywhere;
+}
+
+.access-request-card h3 {
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.access-request-card p {
+    font-size: 14px;
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.decision-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.allow-btn,
+.deny-btn {
+    border: none;
+    padding: 12px 16px;
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.allow-btn {
+    background: #16a34a;
+}
+
+.deny-btn {
+    background: #dc2626;
+}
+
+.waiting-card {
+    text-align: center;
+}
+
+.waiting-status {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-radius: 10px;
+    padding: 18px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.medical-access-header {
+    background: #087e8b;
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.medical-access-header h1 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.medical-access-header p {
+    margin-bottom: 12px;
+}
+
+.medical-access-header span {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.pdf-download {
+    display: block;
+    max-width: 300px;
+    margin: 25px auto;
+    text-align: center;
+    text-decoration: none;
+}
+
+@media (max-width: 550px) {
+    .decision-buttons {
+        flex-direction: column;
+    }
+
+    .allow-btn,
+    .deny-btn {
+        width: 100%;
+    }
+}

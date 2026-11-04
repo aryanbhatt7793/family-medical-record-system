@@ -1,0 +1,25 @@
+
+{% extends "base.html" %}
+{% block title %}Request Medical Access - MediQR{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="logo-circle">+</div>
+    <h1>Request Medical Access</h1>
+    <p class="subtitle">Explain why you need this person's medical information.</p>
+
+    <form method="POST">
+        <label>Reason for requesting access *</label>
+        <textarea name="reason" rows="5" maxlength="1000"
+            placeholder="Explain the emergency situation and why you need the medical information..."
+            required></textarea>
+
+        <label>Your Phone Number (Optional)</label>
+        <input type="tel" name="phone" placeholder="Enter your contact number">
+
+        <button type="submit" class="primary-btn">Ask for Access</button>
+    </form>
+
+    <p class="bottom-text">The account owner must approve your request before private information is shared.</p>
+</div>
+{% endblock %}

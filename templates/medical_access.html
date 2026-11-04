@@ -1,0 +1,76 @@
+
+{% extends "base.html" %}
+{% block title %}Medical Information - MediQR{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+
+    <div class="medical-access-header">
+        <h1>Complete Medical Information</h1>
+        <p>Access approved by the account owner.</p>
+        <span id="expiry-timer">Temporary access: 10 minutes</span>
+    </div>
+
+    <section class="profile-section">
+        <h2>Personal Information</h2>
+        <div class="emergency-info">
+            <span>Full Name</span>
+            <strong>{{ user.full_name }}</strong>
+        </div>
+        <div class="emergency-info">
+            <span>Blood Group</span>
+            <strong>{{ profile.blood_group or 'Not provided' }}</strong>
+        </div>
+        <div class="emergency-info">
+            <span>Known Allergies</span>
+            <strong>{{ profile.allergies or 'Not provided' }}</strong>
+        </div>
+    </section>
+
+    <section class="profile-section">
+        <h2>Additional Medical Information</h2>
+
+        <div class="emergency-info">
+            <span>Height</span>
+            <strong>{{ profile.height or 'Not provided' }} {% if profile.height %}cm{% endif %}</strong>
+        </div>
+
+        <div class="emergency-info">
+            <span>Weight</span>
+            <strong>{{ profile.weight or 'Not provided' }} {% if profile.weight %}kg{% endif %}</strong>
+        </div>
+
+        <div class="emergency-info">
+            <span>BMI (Calculated)</span>
+            <strong>{{ bmi if bmi else 'Not available' }}</strong>
+        </div>
+
+        <div class="emergency-info">
+            <span>Medical Conditions</span>
+            <strong>{{ profile.medical_conditions or 'Not provided' }}</strong>
+        </div>
+
+        <div class="emergency-info">
+            <span>Current Medications</span>
+            <strong>{{ profile.medications or 'Not provided' }}</strong>
+        </div>
+
+        <div class="emergency-info">
+            <span>Previous Surgeries</span>
+            <strong>{{ profile.previous_surgeries or 'Not provided' }}</strong>
+        </div>
+
+        <div class="emergency-info">
+            <span>Other Medical History</span>
+            <strong>{{ profile.medical_history or 'Not provided' }}</strong>
+        </div>
+    </section>
+
+    <a href="{{ url_for('download_medical_pdf', request_id=request_id) }}"
+       class="primary-btn pdf-download">
+       Download Medical Report PDF
+    </a>
+
+    <p class="emergency-footer">Access automatically expires after 10 minutes.</p>
+</div>
+{% endblock %}
